@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AIESEC Tacapes</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+*{box-sizing:border-box}
+:root{--bleu:#037ef3;--fonce:#0a2540;--gris:#6b7785;--bord:#e6ebf1}
+body{margin:0;font-family:"Segoe UI",system-ui,Arial,sans-serif;background:#f4f7fb;color:var(--fonce)}
+
+/* Menu */
+nav{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--bord);display:flex;align-items:center;gap:6px;padding:10px 20px;flex-wrap:wrap}
+.logo{font-weight:800;color:var(--bleu);margin-right:auto;font-size:18px}
+nav button{background:none;border:none;color:var(--fonce);font-size:15px;font-weight:600;padding:9px 16px;border-radius:99px;cursor:pointer;transition:.2s}
+nav button:hover{background:#eaf3ff}
+nav button.on{background:var(--bleu);color:#fff}
+
+.page{display:none;max-width:980px;margin:auto;padding:24px 18px 40px;animation:fade .35s}
+.page.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* Accueil */
+.hero{position:relative;height:420px;border-radius:22px;overflow:hidden;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;padding:34px;
+background-color:var(--bleu);background-image:linear-gradient(to top,rgba(5,20,45,.85),rgba(5,20,45,.15)),url("tacapes.jpg");background-size:cover;background-position:center;box-shadow:0 18px 40px rgba(3,126,243,.25)}
+.hero .tag{align-self:flex-start;background:rgba(255,255,255,.2);backdrop-filter:blur(6px);padding:6px 14px;border-radius:99px;font-size:13px;margin-bottom:12px}
+.hero h1{margin:0;font-size:clamp(28px,5vw,44px);line-height:1.1}
+.hero p{margin:10px 0 0;font-size:16px;opacity:.9;max-width:560px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:22px}
+.tuile{background:#fff;border:1px solid var(--bord);border-radius:18px;padding:22px;cursor:pointer;transition:.25s;text-align:left;font:inherit;color:inherit}
+.tuile:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(10,37,64,.1);border-color:var(--bleu)}
+.tuile .ic{font-size:30px}
+.tuile h3{margin:10px 0 4px;font-size:20px}
+.tuile span{color:var(--gris);font-size:14px}
+
+/* Sections */
+h2{font-size:28px;margin:0 0 4px}
+.sous{color:var(--gris);margin:0 0 18px}
+.card{background:#fff;border:1px solid var(--bord);border-radius:18px;padding:20px;margin-top:16px;box-shadow:0 4px 14px rgba(10,37,64,.04)}
+.card h3{margin:0 0 12px;font-size:18px}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:420px}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--gris);text-align:left;padding:8px 10px}
+td{padding:12px 10px;border-top:1px solid var(--bord)}
+.p{padding:4px 12px;border-radius:99px;font-size:12px;font-weight:700}
+.ok{background:#dff6e9;color:#12804a}
+.wa{background:#fff1d6;color:#a96800}
+.er{background:#ffe0e4;color:#c02a40}
+
+/* Ecran mot de passe */
+#lock{position:fixed;inset:0;z-index:100;background:linear-gradient(135deg,#037ef3,#0a2540);display:flex;align-items:center;justify-content:center;padding:20px}
+.lockbox{background:#fff;border-radius:20px;padding:32px;width:100%;max-width:360px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.lockbox h2{margin:0 0 6px}
+.lockbox p{color:#6b7785;margin:0 0 18px;font-size:14px}
+.lockbox input{width:100%;padding:12px;border:1px solid #e6ebf1;border-radius:10px;font-size:16px;margin-bottom:12px}
+.lockbox button{width:100%;padding:12px;border:none;border-radius:10px;background:#037ef3;color:#fff;font-size:16px;font-weight:700;cursor:pointer}
+#err{color:#c02a40;font-size:13px;min-height:18px;margin-top:10px}
+</style>
+</head>
+<body>
+
+<div id="lock">
+  <div class="lockbox">
+    <h2>AIESEC Tacapes</h2>
+    <p>Entre le mot de passe pour accéder au site</p>
+    <input type="password" id="mdp" placeholder="Mot de passe" onkeydown="if(event.key==='Enter')entrer()">
+    <button onclick="entrer()">Entrer</button>
+    <div id="err"></div>
+  </div>
+</div>
+
+<nav>
+  <div class="logo">AIESEC Tacapes</div>
+  <button class="on" onclick="show('accueil',this)">Accueil</button>
+  <button onclick="show('bcx',this)">BCX</button>
+  <button onclick="show('mogx',this)">MOGX</button>
+  <button onclick="show('fl',this)">F&amp;L</button>
+</nav>
+
+<!-- ACCUEIL -->
+<div id="accueil" class="page on">
+  <div class="hero">
+    <div class="tag" id="date"></div>
+    <h1>Bienvenue à AIESEC Tacapes</h1>
+    <p>Tout le travail du local centralisé dans un seul endroit.</p>
+  </div>
+
+  <div class="grid">
+    <button class="tuile" onclick="goto('bcx')">
+      <div class="ic">📑</div><h3>BCX</h3><span>Contrats et audit</span>
+    </button>
+    <button class="tuile" onclick="goto('mogx')">
+      <div class="ic">📣</div><h3>MOGX</h3><span>Sign-ups et marketing</span>
+    </button>
+    <button class="tuile" onclick="goto('fl')">
+      <div class="ic">💰</div><h3>F&amp;L</h3><span>Contrats NFS et budget</span>
+    </button>
+  </div>
+</div>
+
+<!-- BCX -->
+<div id="bcx" class="page">
+  <h2>BCX</h2>
+  <p class="sous">BD &amp; EWA · iGV · iGT</p>
+  <div class="card"><h3>Contrats</h3><div class="scroll">
+    <table>
+      <tr><th>Contrat</th><th>Type</th><th>Statut</th></tr>
+      <tr><td>Partenaire A</td><td>BD</td><td><span class="p ok">Signé</span></td></tr>
+      <tr><td>Entreprise B</td><td>iGV</td><td><span class="p wa">En cours</span></td></tr>
+      <tr><td>Entreprise C</td><td>iGT</td><td><span class="p er">Expiré</span></td></tr>
+    </table></div>
+  </div>
+  <div class="card"><h3>Audit</h3><div class="scroll">
+    <table>
+      <tr><th>Domaine</th><th>Score</th><th>Statut</th></tr>
+      <tr><td>Documents</td><td>90%</td><td><span class="p ok">Conforme</span></td></tr>
+      <tr><td>Process iGV</td><td>75%</td><td><span class="p wa">À améliorer</span></td></tr>
+      <tr><td>Process iGT</td><td>55%</td><td><span class="p er">Non conforme</span></td></tr>
+    </table></div>
+  </div>
+</div>
+
+<!-- MOGX -->
+<div id="mogx" class="page">
+  <h2>MOGX</h2>
+  <p class="sous">Marketing · oGT · oGV</p>
+  <div class="card"><h3>Classification des sign-ups</h3><div class="scroll">
+    <table>
+      <tr><th>Programme</th><th>Sign-ups</th><th>Contactés</th><th>Statut</th></tr>
+      <tr><td>oGV</td><td>64</td><td>50</td><td><span class="p ok">Bon</span></td></tr>
+      <tr><td>oGT</td><td>41</td><td>20</td><td><span class="p wa">À relancer</span></td></tr>
+    </table></div>
+  </div>
+</div>
+
+<!-- F&L -->
+<div id="fl" class="page">
+  <h2>F&amp;L</h2>
+  <p class="sous">Finance &amp; Legal</p>
+  <div class="card"><h3>Contrats NFS</h3><div class="scroll">
+    <table>
+      <tr><th>Contrat</th><th>Montant</th><th>Statut</th></tr>
+      <tr><td>NFS 2026</td><td>1200 TND</td><td><span class="p ok">Signé</span></td></tr>
+      <tr><td>NFS iGV</td><td>800 TND</td><td><span class="p wa">En cours</span></td></tr>
+    </table></div>
+  </div>
+  <div class="card"><h3>Budget</h3><div class="scroll">
+    <table>
+      <tr><th>Fonction</th><th>Alloué</th><th>Dépensé</th></tr>
+      <tr><td>Marketing</td><td>1500 TND</td><td>900 TND</td></tr>
+      <tr><td>iGV</td><td>1200 TND</td><td>1100 TND</td></tr>
+    </table></div>
+  </div>
+</div>
+
+<script>
+// CHANGE LE MOT DE PASSE ICI
+var MOT_DE_PASSE = 'tacapes2026';
+
+if (sessionStorage.getItem('ok') === '1') {
+  document.getElementById('lock').style.display = 'none';
+}
+
+function entrer() {
+  var saisi = document.getElementById('mdp').value;
+  if (saisi === MOT_DE_PASSE) {
+    sessionStorage.setItem('ok', '1');
+    document.getElementById('lock').style.display = 'none';
+  } else {
+    document.getElementById('err').textContent = 'Mot de passe incorrect';
+  }
+}
+
+var today = new Date();
+document.getElementById('date').textContent = '📍 Gabès · ' + today.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+function show(id, btn) {
+  var pages = document.querySelectorAll('.page');
+  for (var i = 0; i < pages.length; i++) pages[i].classList.remove('on');
+  var buttons = document.querySelectorAll('nav button');
+  for (var j = 0; j < buttons.length; j++) buttons[j].classList.remove('on');
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+  window.scrollTo(0, 0);
+}
+
+function goto(id) {
+  var buttons = document.querySelectorAll('nav button');
+  var noms = { accueil: 0, bcx: 1, mogx: 2, fl: 3 };
+  show(id, buttons[noms[id]]);
+}
+</script>
+</body>
+</html>
